@@ -114,10 +114,13 @@ export default function Pricing({ onGetStarted }: PricingProps) {
                 Email support
               </li>
             </ul>
-            <PremiumButton onClick={onGetStarted} className="w-full">
-              Get Started
-            </PremiumButton>
-          </motion.div>
+            <PremiumButton 
+  onClick={onGetStarted} 
+  className="w-full" 
+  variant="primary"
+>
+  Get Started
+</PremiumButton>
 
           {/* Premium Plan */}
           <motion.div

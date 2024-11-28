@@ -52,13 +52,21 @@ export default function FloatingCTA({ onGetStarted }: FloatingCTAProps) {
             exit={{ y: 100, opacity: 0 }}
             className="fixed bottom-8 right-8 z-50"
           >
-            <PremiumButton
-              onClick={onGetStarted}
-              className="shadow-lg shadow-blue-500/20"
-              variant="premium"
-            >
-              Get Started Now
-            </PremiumButton>
+           Email support
+              </li>
+            </ul>
+            <PremiumButton 
+  onClick={onGetStarted} 
+  className="w-full" 
+  variant="primary"
+>
+  Get Started
+</PremiumButton>
+
+          {/* Premium Plan */}
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.02 }}
           </motion.div>
         )}
       </AnimatePresence>
