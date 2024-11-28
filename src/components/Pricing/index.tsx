@@ -115,12 +115,13 @@ export default function Pricing({ onGetStarted }: PricingProps) {
               </li>
             </ul>
             <PremiumButton 
-  onClick={onGetStarted} 
-  className="w-full" 
-  variant="primary"
->
-  Get Started
-</PremiumButton>
+              onClick={onGetStarted} 
+              className="w-full" 
+              variant="primary"
+            >
+              Get Started
+            </PremiumButton>
+          </motion.div>
 
           {/* Premium Plan */}
           <motion.div
@@ -163,7 +164,11 @@ export default function Pricing({ onGetStarted }: PricingProps) {
                 Custom integrations
               </li>
             </ul>
-            <PremiumButton onClick={onGetStarted} className="w-full" variant="premium">
+            <PremiumButton 
+              onClick={onGetStarted} 
+              className="w-full" 
+              variant="primary"
+            >
               Get Started
             </PremiumButton>
           </motion.div>
