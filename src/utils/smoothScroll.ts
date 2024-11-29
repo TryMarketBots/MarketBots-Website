@@ -1,11 +1,16 @@
-export function smoothScrollTo(elementId: string) {
-  const element = document.getElementById(elementId);
-  if (!element) return;
-
-  element.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-  });
+export function smoothScroll(this: HTMLAnchorElement, event: Event) {
+  event.preventDefault();
+  const href = this.getAttribute('href');
+  
+  if (href) {
+    const targetElement = document.querySelector(href);
+    if (targetElement) {
+      targetElement.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
 }
 
 export function smoothScrollToTop() {
@@ -19,13 +24,7 @@ export function smoothScrollToTop() {
 export function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const href = this.getAttribute('href');
-      if (href === '#') {
-        smoothScrollToTop();
-      } else {
-        smoothScrollTo(href!.substring(1));
-      }
+      smoothScroll.call(this, e);
     });
   });
 }

@@ -1,20 +1,24 @@
 import React from 'react';
 import { motion, MotionProps } from 'framer-motion';
 
-interface PremiumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface PremiumButtonProps extends MotionProps {
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
+  children: React.ReactNode;
+  disabled?: boolean;
+  className?: string;
 }
 
-export default function PremiumButton({ 
+const PremiumButton: React.FC<PremiumButtonProps> = ({ 
   children, 
   variant = 'primary', 
   size = 'md', 
   icon,
+  disabled = false,
   className = '',
-  ...props 
-}: PremiumButtonProps) {
+  ...motionProps 
+}) => {
   const baseStyles = "relative inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 overflow-hidden";
   
   const sizeStyles = {
@@ -31,10 +35,15 @@ export default function PremiumButton({
 
   return (
     <motion.button
+      disabled={disabled}
       className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      {...props}
+      onAnimationStart={(definition) => {
+        // Optional: Add animation start logic
+        console.log('Animation started', definition);
+      }}
+      {...motionProps}
     >
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -60,3 +69,5 @@ export default function PremiumButton({
     </motion.button>
   );
 }
+
+export default PremiumButton;

@@ -33,6 +33,7 @@ export default function MultiStepForm({ onClose }: MultiStepFormProps) {
   const [autoSaveStatus, setAutoSaveStatus] = useState<'saving' | 'saved' | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -136,17 +137,15 @@ export default function MultiStepForm({ onClose }: MultiStepFormProps) {
         // Clear form data and show success
         localStorage.removeItem('formProgress');
         setIsSubmitted(true);
-      } catch (error) {
-        console.error('Error submitting form:', error);
-        
-        // Show a more specific error message
-        const errorMessage = error.message === 'Please fill in all required fields'
-          ? error.message
-          : error.message.includes('Network error')
-            ? 'Network error. Please check your internet connection and try again.'
-            : 'There was an error submitting your form. Please try again or contact support.';
-            
-        alert(errorMessage);
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error 
+          ? (error.message === 'Please fill in all required fields'
+            ? error.message
+            : (error.message.includes('Network error') 
+              ? 'Network error occurred' 
+              : 'An unexpected error occurred'))
+          : 'An unknown error occurred';
+        setSubmissionError(errorMessage);
       } finally {
         setIsSubmitting(false);
       }
@@ -238,9 +237,9 @@ export default function MultiStepForm({ onClose }: MultiStepFormProps) {
             {currentStepData.fields.map((field) => (
               <FormInput
                 key={field.name}
-                {...field}
+                name={field.name as keyof FormData}
                 value={formData[field.name]}
-                onChange={handleInputChange}
+                onChange={(name, value) => handleInputChange(name, value)}
                 error={errors[field.name]}
               />
             ))}
@@ -294,6 +293,11 @@ export default function MultiStepForm({ onClose }: MultiStepFormProps) {
             </div>
           </div>
         </form>
+        {submissionError && (
+          <div className="text-red-500 text-sm mt-4">
+            {submissionError}
+          </div>
+        )}
       </motion.div>
     </div>
   );
